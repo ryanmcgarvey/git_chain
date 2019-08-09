@@ -1,9 +1,14 @@
-require "git_chain/version"
-
+require 'pry'
 module GitChain
   class Error < StandardError; end
+end
 
-  # Your code goes here...
-  class Branch
+Dir[File.join(__dir__, '**', '*.rb')].each do |file|
+  require file
+end
+
+module GitChain
+  def self.git
+    @_git ||= GitHelper.new
   end
 end
