@@ -3,4 +3,4 @@
 puts "Welcome to git chain"
 # require "git_chain"
 require_relative "../lib/git_chain"
-GitChain::Runner.new(ARGV).call
+GitChain::Runner.new(path: %x{pwd}.strip).call(*ARGV)
