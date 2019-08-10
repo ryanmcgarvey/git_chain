@@ -1,0 +1,3 @@
+class GitChain::Branch
+
+end

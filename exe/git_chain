@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-puts "Welcome to git chain"
-
-require "git_chain"
-GitChain::Branch.new
+# require "git_chain"
+require_relative "../lib/git_chain"
+GitChain::Runner.new(path: %x{pwd}.strip).call(*ARGV)

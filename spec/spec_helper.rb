@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "git_chain"
+require 'git_harness'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
