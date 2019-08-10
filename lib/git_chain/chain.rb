@@ -8,7 +8,7 @@ class GitChain::Chain < Struct.new(:storage, :git)
   end
 
   def rebase(child, chain: false)
-    raise "No chain for #{child}" unless record = record_for(child)
+    raise "No chain for #{child}" unless record = storage.record_for(child)
     raise "Git Directory is not clean" unless git.clean?
 
     if record[:parent] != 'master' && chain
@@ -29,16 +29,11 @@ class GitChain::Chain < Struct.new(:storage, :git)
 
   def update_dependent(child:, parent:, base:)
     base = base.sha unless base.is_a? String
-
-    storage.data[child] = {
-      parent: parent,
-      child: child,
-      base: base
-    }
+    storage.update_record(child: child, parent: parent, base: base)
   end
 
   def calculate_base(child, old_base: nil)
-    record = record_for(child)
+    record = storage.record_for(child)
     if record && old_base.nil?
       record[:base]
     else
@@ -47,8 +42,5 @@ class GitChain::Chain < Struct.new(:storage, :git)
     end
   end
 
-  def record_for(child)
-    storage.data[child]
-  end
 
 end

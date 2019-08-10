@@ -8,10 +8,19 @@ class GitChain::Storage
     @file_path = @path + "/" + @file_name
   end
 
-  # a chain should be keyed by the child
-  # each child should have at most 1 parent
-  # but parents can many children than depend on them
-  # hence the hash with unique branch name keys
+  def record_for(child)
+    data[child.to_sym]
+  end
+
+  def update_record(child:, parent:, base: )
+    data[child.to_sym] = {
+      parent: parent,
+      child: child,
+      base: base
+    }
+
+    save_data
+  end
 
   def data
     @_data ||= load_data || {}
@@ -21,13 +30,15 @@ class GitChain::Storage
     File.write(file_path, data.to_json)
   end
 
+  private
+
   def load_data
     json_data = File.read(file_path) if File.exist?(file_path)
 
     if json_data.nil? || json_data.empty?
       nil
     else
-      JSON.parse(json_data)
+      JSON.parse(json_data, symbolize_names: true)
     end
   end
 end
