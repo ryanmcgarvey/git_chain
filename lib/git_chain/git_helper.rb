@@ -24,13 +24,16 @@ class GitHelper
   end
 
   def clean?
-    status = git.status
+    # status = git.status
 
-    status.added.empty? &&
-      status.changed.empty? &&
-      status.deleted.empty? &&
-      status.untracked.empty?
+    # status.added.empty? &&
+    #   status.changed.empty? &&
+    #   status.deleted.empty? &&
+    #   status.untracked.empty?
+    git_command("status -s").empty?
   end
+
+
 
   private
 
