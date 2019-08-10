@@ -28,6 +28,8 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.post_install_message = "Please add .git_chains to your .gitignore file."
+
   spec.add_dependency "git"
 
   spec.add_development_dependency "bundler", "~> 2.0"
