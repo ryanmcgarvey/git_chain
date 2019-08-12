@@ -1,12 +1,13 @@
 # GitChain
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/git_chain`. To experiment with that code, run `bin/console` for an interactive prompt.
+GitChain helps solve the feature branch dependency problem, in which you have several branches lined up for either active work or release, one depndent on the next, when one or more of the upstream branches changes (because of a rebase on trunk with merge conflicts, or some other last minute fix) and you then have to chain rebase --onto all of your downstream branches.
 
-TODO: Delete this and the text above, and describe your gem
+This is particularly a problem for large projects with a slow and strict release cycle. A feature branch might be worked on for a week or so, and during development you discover a refactor or enhancement that ought not to be blocked by your current work so you break it up into it's own branch. However, you would like to use that change in your current work, so you base your branch off of it.
+
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile under the development section:
 
 ```ruby
 gem 'git_chain'
@@ -20,9 +21,30 @@ Or install it yourself as:
 
     $ gem install git_chain
 
+Then, you must add .git_chains to your .gitignore or you're gonna have a bad time.
+
 ## Usage
 
-TODO: Write usage instructions here
+### Initialize a chain
+
+```ruby
+git chain add <parent_branch> [current_base]
+```
+
+This command creates or updates a chain with the **current_branch** as the child and the **parent_branch** as the parent. It does not make any modifications to your repository - it only updates the .git_chains file with the new entry.
+
+By default **current_base** will be the merge_base between master and the **current_branch**, you can pass in an abritrary sha or another branch name if **current_branch** already has a base other than master.
+
+
+### Rebase a chain
+
+```ruby
+git chain rebase [all]
+```
+
+Rebase will lookup the chain for the **current_branch**, perform rebase --onto of the **current_base** onto the **parent_branch**, and then update the **current_base** to be the new merge_base between the **current_branch** and the **parent_branch**.
+
+Rebase all will traverse the chain entries until it finds a link with **master** as the parent, and then perform the rebase onto command all the way back up.
 
 ## Development
 

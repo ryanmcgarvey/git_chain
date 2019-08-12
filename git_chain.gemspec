@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/ryanmcgarvey/git_chain"
   spec.license = "MIT"
 
-  spec.metadata["allowed_push_host"] = spec.homepage
+  # spec.metadata["allowed_push_host"] = spec.homepage
   spec.metadata["homepage_uri"] = spec.homepage
 
   spec.metadata["source_code_uri"] = "https://github.com/ryanmcgarvey/git_chain"
