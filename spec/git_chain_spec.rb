@@ -18,7 +18,6 @@ RSpec.describe GitChain do
       harness.move_current_branch
       harness.checkout('topic_a')
       subject.call('rebase')
-      subject.call('list')
 
       harness.assert_base(child: 'topic_a', parent: 'master')
     end
