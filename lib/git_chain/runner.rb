@@ -18,10 +18,10 @@ class GitChain::Runner
         old_base: args[1]
       )
     when 'rebase'
-      if args[0] == 'all'
-        chain.rebase(git.current_branch, chain: true)
+      if args.first == 'all'
+        chain.rebase_all(git.current_branch)
       else
-        chain.rebase(git.current_branch, chain: false)
+        chain.rebase(git.current_branch)
       end
     else
       raise "Unknown Command: #{command}"

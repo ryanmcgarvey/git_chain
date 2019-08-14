@@ -22,7 +22,7 @@ RSpec.describe GitChain do
       harness.assert_base(child: 'topic_a', parent: 'master')
     end
 
-    it "chain rebases down to master" do
+    it "can chain rebases down to master" do
       subject.call('add', 'master')
 
       harness.checkout("topic_b")
@@ -43,6 +43,31 @@ RSpec.describe GitChain do
 
       harness.assert_base(child: 'topic_a', parent: 'master')
       harness.assert_base(child: 'topic_b', parent: 'topic_a')
+    end
+
+    it "can chain rebases down to first branch" do
+
+      harness.checkout("topic_b")
+      subject.call('add', 'topic_a')
+      harness.move_current_branch
+
+      harness.checkout("topic_c")
+      subject.call('add', 'topic_b')
+      harness.move_current_branch
+
+      harness.checkout('topic_a')
+      harness.move_current_branch
+      harness.checkout('topic_b')
+      harness.move_current_branch
+      harness.checkout('topic_c')
+
+      harness.assert_not_base(child: 'topic_b', parent: 'topic_a')
+      harness.assert_not_base(child: 'topic_c', parent: 'topic_b')
+
+      subject.call('rebase', 'all')
+
+      harness.assert_base(child: 'topic_b', parent: 'topic_a')
+      harness.assert_base(child: 'topic_c', parent: 'topic_b')
     end
 
   end

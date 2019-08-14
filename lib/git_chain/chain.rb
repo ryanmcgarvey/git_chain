@@ -7,13 +7,9 @@ class GitChain::Chain < Struct.new(:storage, :git)
     storage.save_data
   end
 
-  def rebase(child, chain: false)
+  def rebase(child)
     raise "No chain for #{child}" unless record = storage.record_for(child)
     raise "Git Directory is not clean" unless git.clean?
-
-    if record[:parent] != 'master' && chain
-      rebase(record[:parent], chain: true)
-    end
 
     old_base = record[:base]
     parent   = record[:parent]
@@ -23,6 +19,21 @@ class GitChain::Chain < Struct.new(:storage, :git)
     git.rebase_onto(new_base: new_base, old_base: old_base, branch: child)
 
     update_dependent(child: child, parent: parent, base: new_base.sha)
+  end
+
+  def rebase_all(child)
+    raise "Git Directory is not clean" unless git.clean?
+    raise "No chain for #{child}" unless last_record = storage.record_for(child)
+
+    records = [last_record]
+    while new_record = storage.record_for(last_record[:parent])
+      records << new_record
+      last_record = new_record
+    end
+
+    records.reverse.each do |record|
+      rebase(record[:child])
+    end
   end
 
   private
