@@ -10,7 +10,8 @@ class GitChain::Runner
   def call(command, *args)
     case command
     when 'list'
-      puts storage.data
+      # storage.save_data
+      storage.print
     when 'add'
       chain.mark_branch_as_dependent(
         child: git.current_branch,
