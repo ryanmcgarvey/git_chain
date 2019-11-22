@@ -32,6 +32,10 @@ class GitChain::Storage
     pp data
   end
 
+  def print_branch(branch: )
+    pp record_for(branch)
+  end
+
   private
 
   def records
