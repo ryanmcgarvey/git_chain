@@ -1,9 +1,11 @@
 # GitChain
 
-GitChain helps solve the feature branch dependency problem, in which you have several branches lined up for either active work or release, one depndent on the next, when one or more of the upstream branches changes (because of a rebase on trunk with merge conflicts, or some other last minute fix) and you then have to chain rebase --onto all of your downstream branches.
+GitChain helps solve the feature branch dependency problem, in which you have several branches lined up, one depndent on the next. When one or more of the upstream branches changes (because of a rebase on trunk with merge conflicts, or some other last minute fix), it leaves you in the unfortunate position of having to resolve those conflicts, and the cascade of new ones they cause, all the way down your dependency chain. At best it's cumbersome, at worst it can spiral out of control.
 
-This is particularly a problem for large projects with a slow and strict release cycle. A feature branch might be worked on for a week or so, and during development you discover a refactor or enhancement that ought not to be blocked by your current work so you break it up into it's own branch. However, you would like to use that change in your current work, so you base your branch off of it.
 
+This is particularly a problem for large projects with a slow and strict release cycle. A feature branch might be worked on for a week or so, and during development you discover a refactor or enhancement that ought not to be blocked by your current work so you break it up into it's own branch. However, you would like to use that change in your current work, so you base your branch off of it. Anytime that refactor branch needs to change, you run into the possiblity of having the chained dependency problem.
+
+The appropriate solution is to use `git rebase --onto` on each branch. However, this requires you to keep track of the sha from which each branch originates, which is itself cumbersome. Git Chain aims to solve this by keeping track of those shas, and running the appropriate git commands on your behalf.
 
 ## Installation
 
