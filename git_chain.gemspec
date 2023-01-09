@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
 
   spec.post_install_message = "Please add .git_chains to your .gitignore file."
 
-  spec.add_dependency "git", "1.5.0"
+  spec.add_dependency "git", "1.13.0"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 10.0"
